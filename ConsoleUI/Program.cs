@@ -34,6 +34,10 @@ namespace ConsoleUI
                 BrandName = "A" //Marka ismi minimum 2 karakter olmalı hata mesajı alındı.Test Başarılı!
             });
 
+            foreach (var Brands in brandManager.GetAll())
+            {
+                Console.WriteLine(Brands.BrandName);
+            }
         }
     }
 }
