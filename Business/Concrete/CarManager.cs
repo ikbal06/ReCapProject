@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -52,6 +53,16 @@ namespace Business.Concrete
         {
             _carDal.Update(car);
             Console.WriteLine("Araba güncellendi");
+        }
+
+        public Car Get(int Id)
+        {
+            return _carDal.Get(c => c.Id == Id);
+        }
+
+        public List<CarDetailDto> GetCarDetails()
+        {
+            return _carDal.GetCarDetails();
         }
     }
 }

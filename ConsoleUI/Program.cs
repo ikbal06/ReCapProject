@@ -9,35 +9,51 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
+            //CarGetAllTest();
+            //BrandUpdateTest();
+            //CarAddTest();
+            //colorDeleteTest();
+
+            GetCarDetailsTest();
+
+        }
+
+        private static void GetCarDetailsTest()
+        {
             CarManager carManager = new CarManager(new EfCarDal());
+            foreach (var car in carManager.GetCarDetails())
+            {
+                Console.WriteLine(car.CarName + " / " + car.BrandName + " / " + car.ColorName + " / " + car.DailyPrice);
+            }
+        }
+
+        private static void CarGetAllTest()
+        {
+            CarManager carManger = new CarManager(new EfCarDal());
+            foreach (var car in carManger.GetAll())
+            {
+                Console.WriteLine(car.Description);
+            }
+        }
+
+        private static void BrandUpdateTest()
+        {
             BrandManager brandManager = new BrandManager(new EfBrandDal());
+            brandManager.Update(new Brand { BrandId = 10, BrandName = "Audi" });
+        }
+
+        private static void CarAddTest()
+        {
+            Car car10 = new Car
+            { Id = 7, BrandId = 2, CarName = "araba1", ColorId = 1, DailyPrice = 500, Description = "Yeni araba", ModelYear = 2021 };
+
+            Console.WriteLine(car10.Description + "/" + car10.Id + "/" + car10.ColorId + "/" + car10.CarName + "/" + car10.BrandId + "/" + car10.DailyPrice + "/" + car10.ModelYear);
+        }
+
+        private static void colorDeleteTest()
+        {
             ColorManager colorManager = new ColorManager(new EfColorDal());
-
-            foreach (var car in carManager.GetAll())
-            {
-                Console.WriteLine("Car Id : " + car.Id + "\nBrand Id : " + car.BrandId +
-                    "\nColor Id : " + car.ColorId + "\nModel : " + car.ModelYear + "\nCar Type : " + car.Description +
-                    "\nDaily Price : " + car.DailyPrice);
-            }
-            carManager.Add(new Car
-            {
-                BrandId = 4,
-                ColorId = 4,
-                ModelYear = 2020,
-                Description = "Hybrid",
-                DailyPrice = 0 // Sıfır girildiğinde hata mesajı alındı.Test Başarılı!
-            });
-
-            brandManager.Add(new Brand
-            {
-                BrandId = 5,
-                BrandName = "A" //Marka ismi minimum 2 karakter olmalı hata mesajı alındı.Test Başarılı!
-            });
-
-            foreach (var Brands in brandManager.GetAll())
-            {
-                Console.WriteLine(Brands.BrandName);
-            }
+            colorManager.Delete(new Color { ColorName = "açık gri", Id = 11 });
         }
     }
 }
