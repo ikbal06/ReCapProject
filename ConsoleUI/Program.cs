@@ -2,6 +2,7 @@
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using System;
+using Using.Core.Entities;
 
 namespace ConsoleUI
 {
@@ -12,10 +13,41 @@ namespace ConsoleUI
             //CarGetAllTest();
             //BrandUpdateTest();
             //CarAddTest();
-            //colorDeleteTest();
+            //colorDeleteTest(); ---hata alıyorum
+            //GetCarDetailsTest();
 
-            GetCarDetailsTest();
+            //CustomerManagerGetAllTest();
+            //UserManagerAddTest();
+            //RentalManagerTest();
 
+        }
+
+        private static void RentalManagerTest()
+        {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            var rentalResult = rentalManager.Add(new Rental { CarId = 1, CustomerId = 2, ReturnDate = new DateTime(2021, 02, 12), RentDate = DateTime.Today });
+            Console.WriteLine(rentalResult.Message);
+        }
+
+        private static void UserManagerAddTest()
+        {
+            UserManager userManager = new UserManager(new EfUserDal());
+            var userResult = userManager.Add(new User { FirstName = "inci", LastName = "şeker", Email = "gısnodfkmlşs@gmail.com", Password = "cgvhk" });
+            Console.WriteLine(userResult.Message);
+        }
+
+        private static void CustomerManagerGetAllTest()
+        {
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            var customerResult = customerManager.GetAll();
+            if (customerResult.Success)
+            {
+                foreach (var customer in customerResult.Data)
+                {
+                    Console.WriteLine(customer.UserId + " " + customer.CompanyName);
+                }
+            }
+            Console.ReadKey();
         }
 
         private static void GetCarDetailsTest()
@@ -53,7 +85,7 @@ namespace ConsoleUI
         private static void colorDeleteTest()
         {
             ColorManager colorManager = new ColorManager(new EfColorDal());
-            colorManager.Delete(new Color { ColorName = "açık gri", Id = 11 });
+            colorManager.Delete(new Color { ColorName = "sarı",Id=3});
         }
     }
 }
