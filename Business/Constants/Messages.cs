@@ -9,6 +9,8 @@ namespace Business.Constants
         public static string Added = "Eklendi";
         public static string Deleted = "Silindi";
         public static string Update = "Güncellendi";
-
+        public static string CarNameInvalid = "Araba ismi geçersiz";
+        public static string MaintenanceTime = "Sistem bakımda";
+        public static string Listed = "Listelendi";
     }
 }

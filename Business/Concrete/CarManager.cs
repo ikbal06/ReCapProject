@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utililies.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -16,53 +18,54 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
-       
-        public List<Car> GetAll()
-        {
-            return _carDal.GetAll();
-        }
 
-        public List<Car> GetCarsByBrandId(int Id)
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll(c => c.BrandId == Id);
-        }
-
-        public List<Car> GetCarsByColorId(int Id)
-        {
-            return _carDal.GetAll(c => c.ColorId == Id);
-        } 
-        
-        public void Add(Car car)
-        {
-            
-            if (car.Description.Length>=2 && car.DailyPrice>0)
+            if (DateTime.Now.Hour==1)
             {
-               _carDal.Add(car);
+                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
-            else
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.Listed);
+        }
+
+        IDataResult<List<Car>> ICarService.GetCarsByBrandId(int Id)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(b => b.BrandId == Id));
+        }
+
+        IDataResult<List<Car>> ICarService.GetCarsByColorId(int ColorId)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c=>c.ColorId==ColorId));
+        }
+
+        IDataResult<Car> ICarService.GetById(int CarId)
+        {
+            return new SuccessDataResult<Car>(_carDal.Get(ca=>ca.Id==CarId));
+        }
+
+        IDataResult<List<CarDetailDto>> ICarService.GetCarDetails()
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
+        }
+
+        IResult ICarService.Delete(Car car)
+        {
+            throw new NotImplementedException();
+        }
+
+        IResult ICarService.Update(Car car)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IResult Add(Car car)
+        {
+            if (car.CarName.Length<2)
             {
-                Console.WriteLine("Araba ismi için 2 veya daha fazla karekter girin ve günlük fiyat 0 dan yüksek olsun.");
+                return new ErrorResult(Messages.CarNameInvalid);
             }
-        }
-        public void Delete(Car car)
-        {
-            _carDal.Delete(car);
-            Console.WriteLine("Araba silindi");
-        }
-        public void Update(Car car)
-        {
-            _carDal.Update(car);
-            Console.WriteLine("Araba güncellendi");
-        }
-
-        public Car Get(int Id)
-        {
-            return _carDal.Get(c => c.Id == Id);
-        }
-
-        public List<CarDetailDto> GetCarDetails()
-        {
-            return _carDal.GetCarDetails();
+            _carDal.Add(car);
+            return new SuccessResult(Messages.Added);
         }
     }
 }

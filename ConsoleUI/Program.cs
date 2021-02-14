@@ -13,7 +13,7 @@ namespace ConsoleUI
             //CarGetAllTest();
             //BrandUpdateTest();
             //CarAddTest();
-            //colorDeleteTest(); ---hata alıyorum
+            //colorDeleteTest(); 
             //GetCarDetailsTest();
 
             //CustomerManagerGetAllTest();
@@ -55,7 +55,7 @@ namespace ConsoleUI
             CarManager carManager = new CarManager(new EfCarDal());
             foreach (var car in carManager.GetCarDetails())
             {
-                Console.WriteLine(car.CarName + " / " + car.BrandName + " / " + car.ColorName + " / " + car.DailyPrice);
+                Console.WriteLine(car.CarName);
             }
         }
 

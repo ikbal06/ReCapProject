@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utililies.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -14,39 +16,33 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
-        public void Add(Brand brand)
+        
+        IResult IBrandService.Add(Brand brand)
         {
-            if (brand.BrandName.Length>=2)
-            {
-                _brandDal.Add(brand);
-                Console.WriteLine("marka eklendi.");
-            }
-            else
-            {
-                Console.WriteLine("en az iki karekter giriniz.");
-            }
+            _brandDal.Add(brand);
+            return new SuccessResult(Messages.Added);
         }
 
-        public void Delete(Brand brand)
+        IResult IBrandService.Delete(Brand brand)
         {
             _brandDal.Delete(brand);
-            Console.WriteLine("marka silindi.");
+            return new SuccessResult(Messages.Deleted);
         }
 
-        public List<Brand> GetAll()
+        IDataResult<List<Brand>> IBrandService.GetAll()
         {
-            return _brandDal.GetAll();
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(),Messages.Listed);
         }
 
-        public List<Brand> GetByBrandId(int brandId)
+        IDataResult<List<Brand>> IBrandService.GetByBrandId(int brandId)
         {
-            return _brandDal.GetAll(b => b.BrandId == brandId);
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll(b=>b.BrandId==brandId));
         }
 
-        public void Update(Brand brand)
+        IResult IBrandService.Update(Brand brand)
         {
             _brandDal.Update(brand);
-            Console.WriteLine("marka güncellendi.");
+            return new SuccessResult(Messages.Update);
         }
     }
 }

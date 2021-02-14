@@ -18,8 +18,8 @@ namespace Business.Concrete
         }
         public IResult Add(Rental rental)
         {
-            var carRentalStatus = _rentalDal.Get(c=>c.CarId == rental.CarId && c.ReturnDate==null);
-            if (carRentalStatus!=null)
+            var carRentalStatus = _rentalDal.Get(c => c.CarId == rental.CarId && c.ReturnDate == null);
+            if (carRentalStatus != null)
             {
                 return new ErrorResult("Araba teslim edilmedi.");
             }
@@ -28,6 +28,7 @@ namespace Business.Concrete
                 _rentalDal.Add(rental);
                 return new SuccessResult(Messages.Added);
             }
+
         }
 
         public IResult Delete(Rental rental)
@@ -44,11 +45,6 @@ namespace Business.Concrete
         public IDataResult<Rental> GetById(int rentalId)
         {
             return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.Id == rentalId));
-        }
-
-        public object GetRentalDetails()
-        {
-            throw new NotImplementedException();
         }
 
         public IResult Update(Rental rental)
