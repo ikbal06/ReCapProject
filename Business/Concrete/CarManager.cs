@@ -1,9 +1,13 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utililies.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,42 +32,41 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.Listed);
         }
 
-        IDataResult<List<Car>> ICarService.GetCarsByBrandId(int Id)
+        public IDataResult<List<Car>> GetCarsByBrandId(int Id)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(b => b.BrandId == Id));
         }
 
-        IDataResult<List<Car>> ICarService.GetCarsByColorId(int ColorId)
+       public IDataResult<List<Car>> GetCarsByColorId(int ColorId)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c=>c.ColorId==ColorId));
         }
 
-        IDataResult<Car> ICarService.GetById(int CarId)
+        public IDataResult<Car> GetById(int CarId)
         {
             return new SuccessDataResult<Car>(_carDal.Get(ca=>ca.Id==CarId));
         }
 
-        IDataResult<List<CarDetailDto>> ICarService.GetCarDetails()
+       public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
 
-        IResult ICarService.Delete(Car car)
+        public IResult Delete(Car car)
         {
-            throw new NotImplementedException();
+            return new SuccessResult(Messages.Deleted);
         }
 
-        IResult ICarService.Update(Car car)
+       public  IResult Update(Car car)
         {
-            throw new NotImplementedException();
+            return new SuccessResult(Messages.Updated);
         }
 
+
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
-        {
-            if (car.CarName.Length<2)
-            {
-                return new ErrorResult(Messages.CarNameInvalid);
-            }
+        { 
+
             _carDal.Add(car);
             return new SuccessResult(Messages.Added);
         }

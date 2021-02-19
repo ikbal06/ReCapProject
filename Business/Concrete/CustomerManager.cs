@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utililies.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -25,9 +27,11 @@ namespace Business.Concrete
             return new SuccessResult(Messages.Added);
         }
 
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Delete(Customer customer)
         {
             _customerDal.Delete(customer);
+
             return new SuccessResult(Messages.Deleted);
         }
 
@@ -44,7 +48,7 @@ namespace Business.Concrete
         public IResult Update(Customer customer)
         {
             _customerDal.Update(customer);
-            return new SuccessResult(Messages.Update);
+            return new SuccessResult(Messages.Updated);
         }
     }
 }
