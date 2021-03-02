@@ -35,16 +35,19 @@ namespace WebAPI.Controllers
           }
 
          [HttpPost("delete")]
-            public IActionResult Delete(CarImage carImage)
-            {
-                var result = _carImageService.Delete(carImage);
-                if (result.Success)
-                {
-                    return Ok(result);
-                }
-                return BadRequest(result.Message);
+        public IActionResult Delete([FromForm(Name = ("Id"))] int Id)
+        {
 
+            var carImage = _carImageService.Get(Id).Data;
+
+            var result = _carImageService.Delete(carImage);
+            if (result.Success)
+            {
+                return Ok(result);
             }
+            return BadRequest(result.Message);
+        }
+
 
         [HttpPut("update")]
         public IActionResult Update([FromForm(Name = ("Image"))] IFormFile file, [FromForm(Name = ("Id"))] int Id)

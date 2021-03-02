@@ -25,7 +25,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Car>> GetAll()
         {
-            if (DateTime.Now.Hour==1)
+            if (DateTime.Now.Hour==5)
             {
                 return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
@@ -54,11 +54,13 @@ namespace Business.Concrete
 
         public IResult Delete(Car car)
         {
+            _carDal.Delete(car);
             return new SuccessResult(Messages.Deleted);
         }
 
        public  IResult Update(Car car)
         {
+            _carDal.Update(car);
             return new SuccessResult(Messages.Updated);
         }
 
