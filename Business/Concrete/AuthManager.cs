@@ -14,7 +14,7 @@ namespace Business.Concrete
     public class AuthManager : IAuthService
     {
         private IUserService _userService;
-        ITokenHelper _tokenHelper;
+        private ITokenHelper _tokenHelper;
 
         public AuthManager(IUserService userService,ITokenHelper tokenHelper)
         {
@@ -36,7 +36,7 @@ namespace Business.Concrete
             {
                 return new ErrorDataResult<User>(Messages.UserNotFound);
             }
-            if (HashingHelper.VerifyPasswordHash(userForLoginDto.Password,userToCheck.PasswordHash,passwordSalt:userToCheck.PasswordSalt))
+            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password,userToCheck.PasswordHash,userToCheck.PasswordSalt))
             {
                 return new ErrorDataResult<User>(Messages.PasswordError);
             }

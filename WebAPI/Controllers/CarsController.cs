@@ -21,7 +21,6 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getall")]
-        [Authorize()]
         public IActionResult GetAll()
         {
             var result = _carService.GetAll();
@@ -67,7 +66,16 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-
+        [HttpGet("getbyid")]
+        public IActionResult GetById(int Id)
+        {
+            var result = _carService.GetById(Id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
 
 

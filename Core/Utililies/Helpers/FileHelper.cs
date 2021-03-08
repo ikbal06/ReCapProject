@@ -9,20 +9,37 @@ namespace Core.Utililies.Helpers
 {
     public class FileHelper
     {
+        static string directory = Directory.GetCurrentDirectory() + @"\wwwroot\";
+        static string path = @"Images\";
         public static string Add(IFormFile file)
         {
-            var sourcepath = Path.GetTempFileName();
-            if (file.Length > 0)
+            string extension = Path.GetExtension(file.FileName).ToUpper();
+            string newFileName = Guid.NewGuid().ToString("N") + extension;
+            if (!Directory.Exists(directory))
             {
-                using (var stream = new FileStream(sourcepath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
+                Directory.CreateDirectory(directory);
             }
-            var result = newPath(file);
-            File.Move(sourcepath, result);
-            return result;
+            using (FileStream fileStream = File.Create(directory + path + newFileName))
+            {
+                file.CopyToAsync(fileStream);
+                fileStream.Flush();
+            }
+            return (path + newFileName).Replace("\\", "/");
         }
+        //public static string Add(IFormFile file)
+        //{
+        //    var sourcepath = Path.GetTempFileName();
+        //    if (file.Length > 0)
+        //    {
+        //        using (var stream = new FileStream(sourcepath, FileMode.Create))
+        //        {
+        //            file.CopyTo(stream);
+        //        }
+        //    }
+        //    var result = newPath(file);
+        //    File.Move(sourcepath, result);
+        //    return result;
+        // }
         public static IResult Delete(string path)
         {
             try

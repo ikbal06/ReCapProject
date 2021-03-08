@@ -1,9 +1,7 @@
-﻿
+﻿using Business.CSS;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Business.CSS
+namespace Business.CCS
 {
     class DataLogger : ILogger
     {
